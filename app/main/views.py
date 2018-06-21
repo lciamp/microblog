@@ -12,7 +12,6 @@ from config import Config
 def index():
     form = NameForm()
     if form.validate_on_submit():
-        print('index page used from blueprint')
         user = User.query.filter_by(username=form.name.data).first()
         if user is None:
             user = User(username=form.name.data, role=Role.query.filter_by(name='User').first())
@@ -22,8 +21,8 @@ def index():
             if Config.FLASKY_ADMIN:
                 print('Attempting to send email')
                 try:
-                    send_email(Config.FLASKY_ADMIN, 'New User', 'mail/newuser', user=user)
-                    print('email sent')
+                    print('sending email')
+                    #send_email(Config.FLASKY_ADMIN, 'New User', 'mail/newuser', user=user)
                 except:
                     print('email failed')
         else:

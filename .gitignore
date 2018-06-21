@@ -4,6 +4,8 @@ test.py
 db.py
 *.pyc
 *.sqlite
+flaskyenv
+
 
 # Packages
 *.egg
