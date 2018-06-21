@@ -5,11 +5,11 @@ from threading import Thread
 from app import mail
 
 
-
 # asynchronous email
 def send_async_email(app, msg):
-    with app.app_context():
-        mail.send(msg)
+    #with app.app_context():
+        #mail.send(msg)
+    pass
 
 
 # functions for sending an email
