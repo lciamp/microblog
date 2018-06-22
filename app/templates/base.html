@@ -26,6 +26,13 @@
 				<li><a href="/">Home</a></li>
 				<li><a href="{{url_for('main.user')}}">User</a>
 			</ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                {% endif %}
+            </ul>
 		</div>
 	</div>
 </div>
@@ -33,7 +40,17 @@
 
 {% block content %}
 <div class="container">
-	{% block page_content %}{% endblock %}
+    {%  for msg in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{msg}}
+        </div>
+    {% endfor %}
+	{% block page_content %}
+
+
+
+    {% endblock %}
 </div>
 
 {% endblock %}

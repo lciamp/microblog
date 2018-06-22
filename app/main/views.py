@@ -10,31 +10,7 @@ from config import Config
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = NameForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()
-        if user is None:
-            user = User(username=form.name.data, role=Role.query.filter_by(name='User').first())
-            db.session.add(user)
-            db.session.commit()
-            session['known'] = False
-            if Config.FLASKY_ADMIN:
-                print('Attempting to send email')
-                try:
-                    print('sending email')
-                    #send_email(Config.FLASKY_ADMIN, 'New User', 'mail/newuser', user=user)
-                except:
-                    print('email failed')
-        else:
-            session['known'] = True
-        session['name'] = form.name.data
-        form.name.data = ''
-        return redirect(url_for('.index'))
-    return render_template('index.html',
-                           form=form,
-                           name=session.get('name'),
-                           known=session.get('known', False),
-                           current_time=datetime.utcnow())
+    return render_template('index.html')
 
 
 @main.route('/clear')
