@@ -6,6 +6,7 @@ db.py
 *.sqlite
 flaskyenv
 .DS_Store
+.idea
 
 # Packages
 *.egg

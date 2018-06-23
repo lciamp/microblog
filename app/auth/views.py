@@ -34,14 +34,12 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data,
-                    username=form.username.data,
-                    password=form.password.data)
+        user = User(email=form.email.data, username=form.username.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
         send_email(user.email, 'Confirm your account',
-                   'auth/email/confirm', user=user, token=token, dircur=dircur)
+                   'auth/email/confirm', user=user, token=token)
         flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('main.index'))
     return render_template('auth/register.html', form=form)
@@ -56,8 +54,33 @@ def confirm(token):
         db.session.commit()
         flash('You have confirmed your account. Thanks!')
     else:
-        flash('the confirmation link is invalid or has expired.')
+        flash('The confirmation link is invalid or has expired.')
     return redirect(url_for('main.index'))
+
+
+@auth.route('/confirm')
+@login_required
+def resend_token():
+    token = current_user.generate_confirmation_token()
+    send_email(current_user.email, 'Confirm your account',
+               'auth/email/confirm', user=current_user, token=token)
+    flash('A new confirmation email has been sent!')
+    return redirect(url_for('main.index'))
+
+
+@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated and not current_user.confirmed and request.blueprint != 'auth' \
+            and request.endpoint != 'static':
+        return redirect(url_for('auth.unconfirmed'))
+
+
+@auth.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('main.index'))
+    return render_template('auth/unconfirmed.html')
+
 
 
 
