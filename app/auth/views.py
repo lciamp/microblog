@@ -4,7 +4,8 @@ from . import auth
 from .. import db
 from ..models import User
 from ..email import send_email
-from .forms import LoginForm, RegistrationForm, ChangePasswordForm, PasswordResetRequestForm, PasswordResetForm
+from .forms import LoginForm, RegistrationForm, ChangePasswordForm, PasswordResetRequestForm, PasswordResetForm, \
+    ChangeEmailForm
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -111,4 +112,47 @@ def password_reset_request():
         flash('An email with instructions to rest your password has been sent to you.')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
+
+
+@auth.route('/reset/<token>', methods=['GET', 'POST'])
+def password_reset(token):
+    if not current_user.is_anonymous:
+        return redirect(url_for('main.index'))
+    form = PasswordResetForm()
+    if form.validate_on_submit():
+        if User.reset_password(token, form.password.data):
+            db.session.commit()
+            flash('Your password has been updated.')
+        else:
+            return redirect(url_for('main.index'))
+    return render_template('auth/reset_password.html', form=form)
+
+
+@auth.route('/change_email', methods=['GET', 'POST'])
+@login_required
+def change_email_request():
+    form = ChangeEmailForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.password.data):
+            new_email = form.email.data
+            token = current_user.generate_email_change_token(new_email)
+            send_email(new_email, 'Confirm your email address', 'auth/email/change_email',
+                       user=current_user, token=token)
+            flash('An email with instructions to confirm new email has been sent to you.')
+            return redirect('main.index')
+        else:
+            flash('Invalid email or password')
+    return render_template("auth/change_email.html", form=form)
+
+
+@auth.route('/change_email/<token>')
+@login_required
+def change_email(token):
+    if current_user.change_email(token):
+        db.session.commit()
+        flash('You email address has been updated.')
+    else:
+        flash('Invalid request.')
+    return redirect(url_for('main.index'))
+
 

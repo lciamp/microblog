@@ -6,8 +6,12 @@ To confirm your account please click on the following link:
 
 {{ url_for('auth.confirm', token=token, _external=True) }}
 
-Sincerely,
 
+Alternatively, you can paste the following link in your browser's address bar:
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+
+Sincerely,
 The Flasky Team
 
 
