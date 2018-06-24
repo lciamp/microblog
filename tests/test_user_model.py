@@ -1,5 +1,5 @@
 import unittest
-from app.models import User
+from app.models import User, Permission, AnonymousUser, Role
 from app import create_app, db
 import time
 
@@ -10,6 +10,7 @@ class UserModelTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
+        Role.insert_roles()
 
     def tearDown(self):
         db.session.remove()
@@ -20,7 +21,7 @@ class UserModelTestCase(unittest.TestCase):
         u = User(password='cat')
         self.assertTrue(u.password_hash is not None)
 
-    def test_no_password_getter(self):
+    def test_password_has_no_getter(self):
         u = User(password='cat')
         with self.assertRaises(AttributeError):
             u.password
@@ -102,3 +103,19 @@ class UserModelTestCase(unittest.TestCase):
         token = u2.generate_email_change_token('john@example.com')
         self.assertFalse(u2.change_email(token))
         self.assertTrue(u2.email == 'susan@example.com')
+
+    def test_roles_user(self):
+        u = User(email='lou@me.com', password='cat')
+        self.assertTrue(u.can(Permission.FOLLOW))
+        self.assertTrue(u.can(Permission.COMMENT))
+        self.assertTrue(u.can(Permission.WRITE))
+        self.assertFalse(u.can(Permission.MODERATE))
+        self.assertFalse(u.can(Permission.ADMIN))
+
+    def test_roles_anonymous(self):
+        u = AnonymousUser()
+        self.assertFalse(u.can(Permission.FOLLOW))
+        self.assertFalse(u.can(Permission.COMMENT))
+        self.assertFalse(u.can(Permission.WRITE))
+        self.assertFalse(u.can(Permission.MODERATE))
+        self.assertFalse(u.can(Permission.ADMIN))

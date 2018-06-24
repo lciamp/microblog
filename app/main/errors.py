@@ -7,6 +7,9 @@ from . import main
 def page_not_found(e):
     return render_template('404.html'), 404
 
+@main.errorhandler(403)
+def page_not_found(e):
+    return render_template('403.html'), 403
 
 @main.errorhandler(500)
 def page_not_found(e):
