@@ -17,6 +17,10 @@
     <div>
         {% if current_user.can(Permission.WRITE) %}
             {{ wtf.quick_form(form) }}
+            {% block scripts %}
+                {{ super() }}
+                {{ pagedown.include_pagedown() }}
+            {% endblock %}
         {% endif %}
     </div>
     {% include '_posts.html' %}
