@@ -6,6 +6,8 @@
     min-height: 260px;
     margin-left: 280px;
 }
+
+
 div.post-tabs {
     margin-top: 16px;
 }
@@ -30,12 +32,13 @@ div.post-date {
     float: right;
 }
 div.post-author {
+    margin-left: 48px;
     font-weight: bold;
 }
 div.post-thumbnail {
     position: absolute;
 }
-div.post-content {
+div.post-body {
     margin-left: 48px;
     min-height: 48px;
 }
