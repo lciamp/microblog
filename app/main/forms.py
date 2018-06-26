@@ -14,6 +14,7 @@ class EditProfileForm(FlaskForm):
     about_me = TextAreaField('About Me')
     submit = SubmitField('Submit')
 
+
 class EditProfileAdminForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Length(1,64), Email()])
     username = StringField('Username', validators=[DataRequired(),
@@ -44,3 +45,8 @@ class EditProfileAdminForm(FlaskForm):
 class PostForm(FlaskForm):
     body = PageDownField("What's on your mind?", validators=[DataRequired()])
     submit = SubmitField('Submit Post')
+
+
+class CommentForm(FlaskForm):
+    body = StringField('', validators=[DataRequired()])
+    submit = SubmitField('Submit')
