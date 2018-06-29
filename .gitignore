@@ -8,6 +8,7 @@ flaskyenv
 .DS_Store
 .idea
 
+tmp.coverage
 # Packages
 *.egg
 *.egg-info
