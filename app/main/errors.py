@@ -6,7 +6,7 @@ from . import main
 # helper function to return json or html
 
 def request_wants_json():
-    if 'application/json' in request.headers['Accept']:
+    if 'application/json' in request.headers['Accept'] and 'text/html' not in request.headers['Accept']:
         return True
     else:
         return False
@@ -55,6 +55,7 @@ def page_not_found(e):
         response.content_type = 'application/json'
         return response
     msg = {'error': 'page not found', 'code': 404}
+    print(request.headers)
     return render_template('error.html', msg=msg), 404
 
 

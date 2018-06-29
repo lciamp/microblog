@@ -14,6 +14,10 @@ class BasicTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
+    def test_create_app(self):
+        app = create_app('default')
+        self.assertFalse(app is None)
+
     def test_app_exists(self):
         self.assertFalse(current_app is None)
 

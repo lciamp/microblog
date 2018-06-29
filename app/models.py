@@ -330,6 +330,9 @@ class Post(db.Model):
             raise ValidationError('post does not have a body')
         return Post(body=body)
 
+    def __repr__(self):
+        return '<Post %r>' % self.body
+
 
 db.event.listen(Post.body, 'set', Post.on_changed_body)
 
@@ -352,29 +355,31 @@ class Comment(db.Model):
         target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format='html'),
                                                        tags=allowed_tags, strip=True))
 
+    #TODO
+    # add to_json and from_json methods
+    def to_json(self):
+        json_comment = {
+            'url': url_for('api.get_comment', id=self.id),
+            'body': self.body,
+            'body_html': self.body_html,
+            'timestamp': self.timestamp,
+            'author_url': url_for('api.get_user', id=self.author_id),
+            'post_url': url_for('api.get_post', id=self.post_id)
+        }
+        return json_comment
+
+
+
+    @staticmethod
+    def from_json(json_post):
+        body = json_post.get('body')
+        if body is None:
+            raise ValidationError('post does not have a body')
+        return Comment(body=body)
+
+    def __repr__(self):
+        return '<Comment %r>' % self.id
+
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
