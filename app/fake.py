@@ -24,6 +24,7 @@ def users(count=100):
             i += 1
         except IntegrityError:
             db.session.rollback()
+    print('Users Created')
 
 def posts(count=100):
     for i in range(count):

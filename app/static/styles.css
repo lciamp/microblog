@@ -1,4 +1,8 @@
+html, body{
+    font-family: 'Roboto Mono', monospace;
 
+
+}
 .profile-thumbnail {
     position: absolute;
 }
@@ -7,6 +11,21 @@
     margin-left: 280px;
 }
 
+
+a:link {
+    color: #777;
+}
+a:visited {
+    color: #777;
+
+}
+a:hover {
+    color: #0f0f0f;
+    text-decoration: none;
+}
+a:active {
+    color: #0f0f0f;
+}
 
 div.post-tabs {
     margin-top: 16px;
@@ -79,7 +98,7 @@ div.comment-form {
 }
 div.pagination {
     width: 100%;
-    text-align: left;
+    text-align: center;
     padding: 0px;
     margin: 0px;
 }

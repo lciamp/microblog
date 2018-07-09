@@ -31,11 +31,9 @@
                                 <span class="label label-danger">Edit [Admin]</span>
                             </a>
                         {% endif %}
-                        {% if  posts|length > 1  %}
-                            <a href="{{ url_for('.post', id=post.id) }}">
-                                <span class="label label-default">Permalink</span>
-                            </a>
-                        {% endif %}
+                        <a href="{{ url_for('.post', id=post.id) }}">
+                            <span class="label label-default">Permalink</span>
+                        </a>
                         <a href="{{ url_for('.post', id=post.id) }}#comments">
                             <span class="label label-default">{{ post.comments.count() }} Comments</span>
                         </a>

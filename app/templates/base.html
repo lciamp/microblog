@@ -5,13 +5,19 @@
 {{ super() }}
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    {% block styles %}
+        {{ super() }}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+
+    {% endblock %}
 {% endblock %}
+
 
 
 {% block navbar %}
 
-<div class="navbar navbar-inverse" role="navagation">
+<div class="navbar navbar-default" role="navagation">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -26,9 +32,9 @@
 			<ul class="nav navbar-nav">
                 {% if current_user.is_authenticated %}
                 <li>
-                    <a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a>
+                    <a  href="{{ url_for('main.user', username=current_user.username) }}">Profile</a>
                 </li>
-                    {
+
                 {% endif %}
 			</ul>
             <ul class="nav navbar-nav navbar-right">

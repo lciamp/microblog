@@ -1,7 +1,7 @@
 import os, sys, click
 from app import create_app, db
 from app.models import User, Role, Permission, Post, Comment
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
@@ -47,6 +47,14 @@ def test(coverage):
         print('HTML version: file://%s/index.html' % covdir)
         COV.erase()
 
-
+@app.cli.command()
+@click.option('--length', default=25, help='Number of functions to include in the profiler report.')
+@click.option('--profile-dir', default='/Users/lou/Dropbox/flask-oreilly/flasky', help='Directory where profiler data will be saved.')
+def profile(length, profile_dir):
+    '''Start the application under the coe profiler'''
+    from werkzeug.contrib.profiler import ProfilerMiddleware
+    app.config['PROFILE'] = True
+    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
+    app.run(debug=True)
 
 
