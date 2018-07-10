@@ -1,7 +1,5 @@
 html, body{
     font-family: 'Roboto Mono', monospace;
-
-
 }
 .profile-thumbnail {
     position: absolute;
@@ -10,50 +8,39 @@ html, body{
     min-height: 260px;
     margin-left: 280px;
 }
-
 .pagination > li > a:link {
     color: #777;
-
 }
 .pagination > li > a:visited {
     color: #777;
-
 }
 .pagination > li > a:hover {
     color: #0f0f0f;
     text-decoration: none;
-
 }
 .pagination > li > a:active {
     color: white;
-
 }
-
 .pagination > li.active > a:link {
     color: white;
     background-color: #777;
     border-color: #777;
-
 }
 .pagination > li.active > a:hover {
     color: white;
     background-color: #777;
     border-color: #777;
-
 }
 .pagination > li.active > a:visited {
     color: white;
     background-color: #777;
     border-color: #777;
-
 }
 .pagination > li.active > a:active {
     color: white;
     background-color: #777;
     border-color: #777;
-
 }
-
 a:link {
     color: #777;
 }
