@@ -7,7 +7,7 @@ db.py
 flaskyenv
 .DS_Store
 .idea
-
+bootstrap.sh
 tmp.coverage
 # Packages
 *.egg

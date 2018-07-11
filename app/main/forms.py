@@ -26,7 +26,7 @@ class EditProfileAdminForm(FlaskForm):
     role = SelectField('Role', coerce=int)
     name = StringField('Real Name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
-    about_me = TextAreaField('About me')
+    about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')
 
     def __init__(self, user, *args, **kwargs):
@@ -41,6 +41,7 @@ class EditProfileAdminForm(FlaskForm):
     def validate_username(self, field):
         if field.data != self.user.username and User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already registered.')
+
 
 class PostForm(FlaskForm):
     body = PageDownField("What's on your mind?", validators=[DataRequired()])

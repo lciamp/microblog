@@ -20,6 +20,7 @@ class Permission:
     MODERATE = 8
     ADMIN = 16
 
+
 # models:
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -106,10 +107,10 @@ class User(UserMixin, db.Model):
                                       lazy='dynamic',
                                       cascade='all, delete-orphan')
     followers        = db.relationship('Follow',
-                                      foreign_keys=[Follow.followed_id],
-                                      backref=db.backref('followed', lazy='joined'),
-                                      lazy='dynamic',
-                                      cascade='all, delete-orphan')
+                                       foreign_keys=[Follow.followed_id],
+                                       backref=db.backref('followed', lazy='joined'),
+                                       lazy='dynamic',
+                                       cascade='all, delete-orphan')
 
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
@@ -123,7 +124,6 @@ class User(UserMixin, db.Model):
         if self.email is not None and self.avatar_hash is None:
             self.avatar_hash = self.gravatar_hash()
         self.follow(self)
-
 
     def can(self, perm):
         return self.role is not None and self.role.has_permission(perm)
@@ -272,7 +272,6 @@ class User(UserMixin, db.Model):
         }
         return json_user
 
-
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -355,8 +354,6 @@ class Comment(db.Model):
         target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format='html'),
                                                        tags=allowed_tags, strip=True))
 
-    #TODO
-    # add to_json and from_json methods
     def to_json(self):
         json_comment = {
             'url': url_for('api.get_comment', id=self.id),
@@ -368,8 +365,6 @@ class Comment(db.Model):
         }
         return json_comment
 
-
-
     @staticmethod
     def from_json(json_post):
         body = json_post.get('body')
@@ -379,6 +374,7 @@ class Comment(db.Model):
 
     def __repr__(self):
         return '<Comment %r>' % self.id
+
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
 
