@@ -49,7 +49,9 @@ def test(coverage):
 
 @app.cli.command()
 @click.option('--length', default=25, help='Number of functions to include in the profiler report.')
-@click.option('--profile-dir', default='/Users/lou/Dropbox/flask-oreilly/flasky', help='Directory where profiler data will be saved.')
+@click.option('--profile-dir',
+              default='/Users/lou/Dropbox/flask-oreilly/flasky',
+              help='Directory where profiler data will be saved.')
 def profile(length, profile_dir):
     '''Start the application under the coe profiler'''
     from werkzeug.contrib.profiler import ProfilerMiddleware
