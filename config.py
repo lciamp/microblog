@@ -18,6 +18,7 @@ class Config:
     FLASKY_COMMENTS_PER_PAGE = 10
     SQLALCHEMY_RECORD_QUERIES = True
     FLASKY_SLOW_DB_QUERY_TIME = 0.5
+    SSL_REDIRECT = False
 
     @staticmethod
     def init_app(app):
@@ -40,6 +41,34 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     ENV = 'prod'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+
+    # if needed:
+    #SSL_REDIRECT = True
+
+    @classmethod
+    def init_app(cls, app):
+        Config.init_app(app)
+
+        # email errors to admins
+        import logging
+        from logging.handlers import SMTPHandler
+        credentials = None
+        secure = None
+        if getattr(cls, 'MAIL_USERNAME', None) is not None:
+            credentials = (cls.Mail_USERNAME, cls.MAIL_PASSWORD)
+            if getattr(cls, 'MAIL_USE_SSL', None):
+                secure = ()
+        mail_handler = SMTPHandler(
+            mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+            fromaddr=cls.FLASKY_MAIL_SENDER,
+            toaddrs=[cls.FLASKY_ADMIN],
+            subject=cls.FLASKY_MAIL_SUBJECT_PREFIX + ' Application Error',
+            credentials=credentials,
+            secure=secure
+        )
+        mail_handler.setLevel(logging.ERROR)
+        app.logger.addHandler(mail_handler)
+
 
 
 config = {

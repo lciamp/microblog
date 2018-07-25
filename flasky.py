@@ -59,4 +59,14 @@ def profile(length, profile_dir):
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
     app.run(debug=True)
 
+@app.cli.command()
+def deploy():
+    '''Run deployment tasks'''
+    # migrate the database to latest revision
+    upgrade()
 
+    # create or update the user roles
+    Role.insert_roles()
+
+    # ensure all users are following themselves
+    User.add_self_follows()
